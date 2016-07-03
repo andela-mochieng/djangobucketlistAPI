@@ -7,12 +7,13 @@ from django.db import models
 class BucketList(models.Model):
     """Bucketlist model design"""
     list_name = models.CharField(max_length=100, blank=False)
-    created_by =  models.CharField(max_length=100, blank=False)
+    creator =  models.CharField(max_length=100, blank=False)
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ['date_modified']
+
     def __str__(self):
         return  self.list_name
 
@@ -21,7 +22,7 @@ class BucketListItem(models.Model):
     item_name = models.CharField(max_length=100, blank=False)
     item_description = models.CharField(max_length=100, blank=True)
     done = models.BooleanField(default=False)
-    created_by = models.CharField(max_length=100, blank=False)
+    creator = models.CharField(max_length=100, blank=False)
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
     bucketlist = models.ForeignKey(BucketList, on_delete=models.CASCADE, related_name='bucketlist')
