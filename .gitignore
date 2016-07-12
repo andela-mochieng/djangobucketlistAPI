@@ -6,6 +6,8 @@ __pycache__/
 # C extensions
 *.so
 .idea
+.staticfiles/
+.bower_components/
 # Distribution / packaging
 .Python
 env/

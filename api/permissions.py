@@ -1,7 +1,9 @@
 """Defines our API custom permissions"""
-from rest_framework import permissions
+from rest_framework.permissions import BasePermission
+from .models import BucketListItem
 
-class IsOwner(permissions.BasePermission):
-    """ Grant users permission to create,read, update and delete data"""
-    def has_object_permission(self,request, view, obj):
-        return obj.created_by == request.user
+class IsOwnerOrReadOnly(BasePermission):
+    """
+    Object-level permission class to allow only an Owner to edit their bucketlist else read only"""
+    def has_object_permission(self, request, view, obj ):
+        return obj.creator == request.user
