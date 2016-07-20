@@ -1,5 +1,6 @@
 appnope==0.1.0
 backports.shutil-get-terminal-size==1.0.0
+coverage==4.1
 decorator==4.0.10
 Django==1.9.7
 django-contrib-comments==1.7.1
