@@ -117,18 +117,7 @@ class BucketListTests(APITestCase):
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
-    # def test_bucketlist_update_succeeds(self):
-    #     """Tests whether bucketlist gets updated"""
-    #     bucketlist = BucketList.objects.get(list_name=self.list_name)
-    #     self.list_name = fake.first_name()
-    #     data = {'list_name':self.list_name, 'id':bucketlist.id}
-    #     url = "/api/v.1/bucketlists/{}/".format(bucketlist.id)
-    #     import ipdb;
-    #     ipdb.set_trace()
-    #     response = self.client.put(url, data)
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
-    #     self.assertEqual(response.data.get('list_name'), self.list_name)
-#
+   
     def tearDown(self):
         """Delete user modal after use"""
         del self.user
