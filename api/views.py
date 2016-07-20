@@ -1,8 +1,5 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
-from rest_framework import filters
-from rest_framework.response import Response
 from .serializers import UserSerializer, BucketlistSerializer, BucketlistItemSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework.generics import (
@@ -22,6 +19,7 @@ def get_user_bucketlist(obj):
     bucketlist_id = obj.kwargs.get('id',0)
     return get_object_or_404(
         BucketList, id=int(bucketlist_id), creator=obj.request.user)
+
 class UserListView(CreateAPIView):
     """
     Class that queries the user model, and map the user object with it's serializers

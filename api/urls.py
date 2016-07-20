@@ -9,7 +9,7 @@ from .views import *
 
 urlpatterns = [
     url(r'^register/$', UserListView.as_view(), name='register'),
-    url(r'^api-token-auth/$', obtain_jwt_token),
+    url(r'^api-token-auth/$', obtain_jwt_token, name='login' ),
     url(r'^auth/token/refresh/', refresh_jwt_token),
     url(r'^auth/verify-token/', verify_jwt_token),
     url(r'^bucketlists/$', BListsView.as_view(), name='blists'),
