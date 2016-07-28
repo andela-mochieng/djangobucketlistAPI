@@ -28,7 +28,7 @@ class UserSerializer(ModelSerializer):
                                               "address has already registered. Was it you?")
 
         return email
-    
+
     def validate(self, data):
         if data['password']:
             if data['password'] != data['confirm_password']:

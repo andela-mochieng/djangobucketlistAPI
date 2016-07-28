@@ -16,6 +16,7 @@ class UserTests(APITestCase):
         self.username = fake.name().replace(' ', '')
         self.email = fake.email()
         self.password = fake.password()
+        self.confirm_password = self.password
         self.user = User.objects.create_user(
             username=self.username, email=self.email, password=self.password)
 
@@ -24,7 +25,8 @@ class UserTests(APITestCase):
 
         url = reverse('register')
         username = fake.name().replace(' ', '')
-        data = {"username": username, "email":fake.email(), "password":fake.password()}
+        password = fake.password()
+        data = {"username": username, "email":fake.email(), "password":password, "confirm_password": password}
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data.get('username'), username)
@@ -117,6 +119,36 @@ class BucketListTests(APITestCase):
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
+    # def test_add_edit_del_item(self):
+    #     """Test editing of items"""
+    #     list_url = reverse('blists')
+    #     data = {'list_name': fake.first_name(), 'creator': self.user.id}
+    #     item = {'item_name': fake.first_name()}
+    #     response = self.client.post(list_url, data)
+    #     self.assertEqual(response.status_code, 201)
+    #     # create Item
+    #     # import ipdb;
+    #     # ipdb.set_trace()
+    #     bid = BucketList.objects.first().id
+    #     url = "/api/bucketlists/{}/items/".format(bid)
+    #     response = self.client.post(url, item)
+    #     self.assertEqual(response.status_code, 201)
+    #     self.assertEqual(BucketListItems.objects.count(), 1)
+
+        # # edit item
+        # id = Bucketitems.objects.first()
+        # url += "{}/".format(id.id)
+        # response = self.client.get(url, item, format='json')
+        # item = response.data
+        # item['done'] = True
+        # response = self.client.put(url, item, format='json')
+        # bucketitem = Bucketitems.objects.first()
+        # self.assertEqual(response.data['done'], item['done'])
+        # self.assertTrue(bucketitem.done)
+        #
+        # # Delete
+        # response = self.client.delete(url, item)
+        # self.assertEqual(BucketListItems.objects.count(), 0)
 
     def tearDown(self):
         """Delete user modal after use"""
