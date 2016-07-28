@@ -20,6 +20,7 @@ def get_user_bucketlist(obj):
     return get_object_or_404(
         BucketList, id=int(bucketlist_id), creator=obj.request.user)
 
+
 class UserListView(CreateAPIView):
     """
     Class that queries the user model, and map the user object with it's serializers
@@ -29,7 +30,6 @@ class UserListView(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (AllowAny,)
-
 
 
 # Create your views here.

@@ -12,25 +12,48 @@ class UserSerializer(ModelSerializer):
     password = serializers.CharField(max_length=100,
                                      style={'input_type': 'password'},
                                      required=True, write_only=True)
+    confirm_password = serializers.CharField(max_length=100,
+                                     style={'input_type': 'password'},
+                                     required=True, write_only=True)
 
 
+    def create(self, validated_data):
+        validated_data.pop('confirm_password')
+        return User.objects.create_user(**validated_data)
+
+    def validate_email(self, email):
+        existing = User.objects.filter(email=email).first()
+        if existing:
+            raise serializers.ValidationError("Someone with that email "
+                                              "address has already registered. Was it you?")
+
+        return email
+    
     def validate(self, data):
-        try:
-            validate_email(data['email'])
-            return data
-        except ValidationError:
-            raise serializers.ValidationError('The email is invalid.')
-
-    def create(self,validate_data):
-        user = User.objects.create(username=validate_data['username'], email=validate_data['email'])
-        user.set_password(validate_data['password'])
-        user.save()
-        return user
+        if data['password']:
+            if data['password'] != data['confirm_password']:
+                raise serializers.ValidationError(
+                    "The passwords have to be similar"
+                )
+        return data
 
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password')
+        fields = ('username', 'email', 'password', 'confirm_password')
+        read_only_fields = ('id', 'confirm_password')
+
+class LoginSerializer(ModelSerializer):
+    password = serializers.CharField(
+        style={'input_type': 'password'}, max_length=100, write_only=True, required=True)
+    email = serializers.EmailField(
+        max_length=100, required=True, write_only=True)
+
+    class Meta:
+        model = User
+        fields = ('id', 'email', 'password')
+        read_only_fields = ('id',)
+
 
 class BucketlistItemSerializer(ModelSerializer):
     item_name = serializers.CharField(max_length=100)
