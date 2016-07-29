@@ -122,8 +122,8 @@ class BucketListTests(APITestCase):
     # def test_add_edit_del_item(self):
     #     """Test editing of items"""
     #     list_url = reverse('blists')
-    #     data = {'list_name': fake.first_name(), 'creator': self.user.id}
-    #     item = {'item_name': fake.first_name()}
+    #     data = {'list_name': fake.first_name(), 'item_name': fake.first_name()}
+    #     # item = {'item_name': fake.first_name()}
     #     response = self.client.post(list_url, data)
     #     self.assertEqual(response.status_code, 201)
     #     # create Item
