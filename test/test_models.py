@@ -30,9 +30,9 @@ class UserTests(TestCase):
         """Test the creation of a user fails"""
         try:
             self.user = User.objects.create_user(
-                username=self.username,  password=self.password)
+                username=self.username, password=self.password)
         except IntegrityError as e:
-            self.assertIn("duplicate key value violates unique constraint", e.message)
+            self.assertIn("column username is not unique", e.message)
 
 
 class BucketListTests(TestCase):

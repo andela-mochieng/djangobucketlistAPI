@@ -5,7 +5,7 @@ Test specific settings.
 from .base import *
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-SECRET_KEY = " Your my test secret"
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 NOSE_ARGS = [
     '--with-coverage',
