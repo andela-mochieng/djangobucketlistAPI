@@ -76,7 +76,7 @@ MIDDLEWARE_CLASSES = [
 ROOT_URLCONF = 'bucketlist.urls'
 
 USE_ETAGS = True
-CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_ALLOW_ALL = True
 
 TEMPLATES = [
     {
