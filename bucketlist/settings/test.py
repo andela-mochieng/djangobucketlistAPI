@@ -9,7 +9,7 @@ SECRET_KEY = " Your my test secret"
 
 NOSE_ARGS = [
     '--with-coverage',
-    '--cover-package=bucketlist,api',
+    '--cover-package=api',
 ]
 
 DATABASES = {
