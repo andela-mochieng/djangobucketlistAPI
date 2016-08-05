@@ -36,7 +36,7 @@ class UserTests(APITestCase):
         Test whether user creation fails when same user tries to re-register
         """
         url = reverse('register')
-        data = {'username': self.username, 'email':self.email, 'password':self.password}
+        data = {'username': self.username, 'email':self.email, 'password':self.password, "confirm_password": self.password }
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertNotEqual(response.data.get('username'), "A user with that username already exists.")
