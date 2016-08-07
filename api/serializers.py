@@ -13,9 +13,8 @@ class UserSerializer(ModelSerializer):
                                      style={'input_type': 'password'},
                                      required=True, write_only=True)
     confirm_password = serializers.CharField(max_length=100,
-                                     style={'input_type': 'password'},
-                                     required=True, write_only=True)
-
+                                             style={'input_type': 'password'},
+                                             required=True, write_only=True)
 
     def create(self, validated_data):
         validated_data.pop('confirm_password')
@@ -37,11 +36,11 @@ class UserSerializer(ModelSerializer):
                 )
         return data
 
-
     class Meta:
         model = User
         fields = ('username', 'email', 'password', 'confirm_password')
         read_only_fields = ('id', 'confirm_password')
+
 
 class LoginSerializer(ModelSerializer):
     password = serializers.CharField(
@@ -52,12 +51,10 @@ class LoginSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'email', 'password')
-        read_only_fields = ('id',)
 
 
 class BucketlistItemSerializer(ModelSerializer):
     item_name = serializers.CharField(max_length=100)
-    item_description = serializers.CharField(max_length=100)
 
     def validate(self, data):
         """Ensure item_name is not empty."""
@@ -68,12 +65,12 @@ class BucketlistItemSerializer(ModelSerializer):
 
     class Meta:
         model = BucketListItem
-        fields = ('id', 'item_name', 'item_description', 'done', 'date_created', 'date_modified')
+        fields = ('id', 'item_name',
+                  'done', 'date_created', 'date_modified')
 
 
 class BucketlistSerializer(ModelSerializer):
-    # items = BucketlistItemSerializer(many=True, read_only=True)
-    bucketlistitem = serializers.StringRelatedField(many=True)
+    items = BucketlistItemSerializer(many=True, required=False, read_only=True)
     list_name = serializers.CharField(max_length=100)
 
     def validate(self, data):
@@ -84,4 +81,6 @@ class BucketlistSerializer(ModelSerializer):
 
     class Meta:
         model = BucketList
-        fields = ('id', 'list_name', 'bucketlistitem', 'date_created', 'date_modified','creator')
+        fields = ('id', 'list_name', 'creator',
+                  'date_created', 'date_modified', 'items')
+        read_only_fields = ('creator',)

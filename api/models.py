@@ -16,13 +16,15 @@ class BucketList(models.Model):
         ordering = ['date_modified']
         unique_together = ('creator', 'list_name',)
 
+
+
+
     def __str__(self):
         return  self.list_name
 
 class BucketListItem(models.Model):
     """Bucketlist item model design"""
     item_name = models.CharField(max_length=100, blank=False)
-    item_description = models.CharField(max_length=100, blank=True)
     done = models.BooleanField(default=False)
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
@@ -33,4 +35,4 @@ class BucketListItem(models.Model):
         unique_together = ('bucketlist', 'item_name',)
 
     def __str__(self):
-        return  self.item_name
+        return self.item_name
