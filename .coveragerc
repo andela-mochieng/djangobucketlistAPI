@@ -5,6 +5,9 @@ omit=
     *site-packages/nose/*
     *__init__*
     *tests/*
+    *bucketlist/*
+    *api/migrations/*
+
 exclude_lines =
     make_shell_context
 
