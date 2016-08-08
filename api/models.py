@@ -20,7 +20,7 @@ class BucketList(models.Model):
 
 
     def __str__(self):
-        return  self.list_name
+        return self.list_name
 
 class BucketListItem(models.Model):
     """Bucketlist item model design"""
