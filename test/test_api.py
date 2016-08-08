@@ -104,8 +104,8 @@ class BucketListTests(APITestCase):
 
 
     def test_bucketlist_creation_fails_when_wrong_info_is_provided(self):
-        """Tests whether bucketlist isn't created when he provides the right info"""
-        data = {'list_name': self.list_name}
+        """Tests whether bucketlist isn't created when he provides the wron info"""
+        data = {'list_name': ''}
         url = reverse('blists')
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -119,36 +119,34 @@ class BucketListTests(APITestCase):
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
-    # def test_add_edit_del_item(self):
-    #     """Test editing of items"""
-    #     list_url = reverse('blists')
-    #     data = {'list_name': fake.first_name(), 'item_name': fake.first_name()}
-    #     # item = {'item_name': fake.first_name()}
-    #     response = self.client.post(list_url, data)
-    #     self.assertEqual(response.status_code, 201)
-    #     # create Item
-    #     # import ipdb;
-    #     # ipdb.set_trace()
-    #     bid = BucketList.objects.first().id
-    #     url = "/api/bucketlists/{}/items/".format(bid)
-    #     response = self.client.post(url, item)
-    #     self.assertEqual(response.status_code, 201)
-    #     self.assertEqual(BucketListItems.objects.count(), 1)
+    def test_add_edit_del_item(self):
+        """Test editing of items"""
+        list_url = "/api/v.1/bucketlists/"
+        data = {'list_name': fake.first_name()}
+        item = {'item_name': fake.first_name()}
+        response = self.client.post(list_url, data)
+        self.assertEqual(response.status_code, 201)
 
-        # # edit item
-        # id = Bucketitems.objects.first()
-        # url += "{}/".format(id.id)
-        # response = self.client.get(url, item, format='json')
-        # item = response.data
-        # item['done'] = True
-        # response = self.client.put(url, item, format='json')
-        # bucketitem = Bucketitems.objects.first()
-        # self.assertEqual(response.data['done'], item['done'])
-        # self.assertTrue(bucketitem.done)
-        #
-        # # Delete
-        # response = self.client.delete(url, item)
-        # self.assertEqual(BucketListItems.objects.count(), 0)
+        bid = BucketList.objects.first().id
+        url = "/api/v.1/bucketlists/{}/items/".format(bid)
+        response = self.client.post(url, item)
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(BucketListItem.objects.count(), 1)
+
+        # edit item
+        Bitem = BucketListItem.objects.first()
+        url += "{}/".format(Bitem.id)
+        response = self.client.get(url, item, format='json')
+        item = response.data
+        item['done'] = True
+        response = self.client.put(url, item, format='json')
+        bucketitem = BucketListItem.objects.first()
+        self.assertEqual(response.data['done'], item['done'])
+        self.assertTrue(bucketitem.done)
+
+        # Delete
+        response = self.client.delete(url, item)
+        self.assertEqual(BucketListItem.objects.count(), 0)
 
     def tearDown(self):
         """Delete user modal after use"""

@@ -28,7 +28,7 @@ class BucketListItem(models.Model):
     done = models.BooleanField(default=False)
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
-    bucketlist = models.ForeignKey(BucketList, on_delete=models.CASCADE, related_name='bucketlistitem')
+    bucketlist = models.ForeignKey(BucketList, on_delete=models.CASCADE, related_name='items')
 
     class Meta:
         ordering = ['date_modified']

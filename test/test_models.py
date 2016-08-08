@@ -26,8 +26,8 @@ class UserTests(TestCase):
         """Test the creation of a user"""
         self.assertIsInstance(self.user, User)
 
-    def test_super_user_creation_fails(self):
-        """Test the creation of a user fails"""
+    def test_user_creation_fails_when_username_exists(self):
+        """Test the creation of a user fails when username exists"""
         try:
             self.user = User.objects.create_user(
                 username=self.username, password=self.password)
