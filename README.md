@@ -57,7 +57,7 @@ $ pip install -r requirements.txt
 $ cd djangobucketlistAPI
 ```
 
-4. __Navigate to bucketlist/settings/dev.py and config your database settings__
+4. **__Navigate to bucketlist/settings/dev.py and config your database settings__**
 ###Set up a local database configurations
 
 ```shell
@@ -78,14 +78,12 @@ DATABASES = {
 }
 ```
 
-
-```shell
 5. Run `$ python manage.py makemigrations` and `$ python manage.py migrate` to create the necessary tables  required to run the application.
 6. Run `$ python manage.py runserver` to run the app.
-7. Run `$ coverage run manage.py test` to know  theautomated test coverage.
+7. Run `$ coverage run manage.py test` to know  the automated test coverage.
 8. Run `$ coverage report` to view the report of the coverage on your terminal.
 9. Run `$ coverage html` to produce the html of coverage result.
-```
+
 
 
 
