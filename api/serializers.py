@@ -70,7 +70,7 @@ class BucketlistItemSerializer(ModelSerializer):
 
 
 class BucketlistSerializer(ModelSerializer):
-    items = BucketlistItemSerializer(many=True, required=False, read_only=True)
+    items = BucketlistItemSerializer(many=True, read_only=True)
     list_name = serializers.CharField(max_length=100)
 
     def validate(self, data):

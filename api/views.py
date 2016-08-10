@@ -12,11 +12,17 @@ from rest_framework.permissions import (
     AllowAny,
     IsAuthenticated,
 )
+from rest_framework.filters import (
+    SearchFilter,
+    OrderingFilter,
+)
 from .permissions import IsOwnerOrReadOnly
 from .models import BucketList, BucketListItem
+from .pagination import CustomPageNumberPagination
+
 
 def get_user_bucketlist(obj):
-    bucketlist_id = obj.kwargs.get('id',0)
+    bucketlist_id = obj.kwargs.get('id', 0)
     return get_object_or_404(
         BucketList, id=int(bucketlist_id), creator=obj.request.user)
 
@@ -53,14 +59,15 @@ class BListsView(ListCreateAPIView):
 
     """
     permission_classes = (IsOwnerOrReadOnly, IsAuthenticated,)
+    pagination_class = CustomPageNumberPagination
     queryset = BucketList.objects.all()
     serializer_class = BucketlistSerializer
-
+    filter_backends = [SearchFilter, OrderingFilter]
+    search_fields = ['list_name']
 
     def perform_create(self, serializer):
+      if serializer.is_valid:
         serializer.save(creator=self.request.user)
-
-
 
     def get_queryset(self):
         """Specifies the queryset used for serialization"""
@@ -68,7 +75,6 @@ class BListsView(ListCreateAPIView):
         if search:
             return BucketList.search(search)
         return BucketList.objects.all().filter(creator=self.request.user)
-
 
 
 class SingleBListDetailView(RetrieveUpdateDestroyAPIView):
@@ -82,14 +88,36 @@ class SingleBListDetailView(RetrieveUpdateDestroyAPIView):
       Response: JSON
     """
     queryset = BucketList.objects.all()
+    # import ipdb; ipdb.set_trace()
     serializer_class = BucketlistSerializer
     permission_classes = (IsOwnerOrReadOnly, IsAuthenticated,)
 
 
 class BListItemCreateView(ListCreateAPIView):
-    permission_classes = (IsAuthenticated,)
+    """
+    Method [GET]: Returns bucket list items.
+        Parameters:
+          page  (optional)    default=1
+      Header:
+          AccessToken  (required)
+      Response: JSON
+    Method [POST]:  Creates new bucket list item.
+      Parameters:
+          item_name (required)
+      Header:
+          AccessToken  (required)
+      Response: JSON
+    """
+
+    pagination_class = CustomPageNumberPagination
     serializer_class = BucketlistItemSerializer
     queryset = BucketListItem.objects.all()
+    permission_classes = (IsAuthenticated,)
+    filter_backends = [SearchFilter, OrderingFilter]
+    search_fields = ['item_name']
+
+
+
 
 
     def perform_create(self, serializer):

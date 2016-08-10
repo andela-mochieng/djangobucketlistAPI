@@ -9,8 +9,7 @@ class BucketList(models.Model):
     list_name = models.CharField(max_length=100, blank=False)
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
-    creator = models.ForeignKey(User, on_delete=models.CASCADE,
-                             default=1)
+    creator = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ['date_modified']
