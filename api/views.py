@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from .serializers import UserSerializer, BucketlistSerializer, BucketlistItemSerializer
 from django.shortcuts import get_object_or_404
@@ -66,7 +66,6 @@ class BListsView(ListCreateAPIView):
     search_fields = ['list_name']
 
     def perform_create(self, serializer):
-      if serializer.is_valid:
         serializer.save(creator=self.request.user)
 
     def get_queryset(self):
@@ -88,7 +87,6 @@ class SingleBListDetailView(RetrieveUpdateDestroyAPIView):
       Response: JSON
     """
     queryset = BucketList.objects.all()
-    # import ipdb; ipdb.set_trace()
     serializer_class = BucketlistSerializer
     permission_classes = (IsOwnerOrReadOnly, IsAuthenticated,)
 
@@ -115,10 +113,6 @@ class BListItemCreateView(ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
     filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['item_name']
-
-
-
-
 
     def perform_create(self, serializer):
         """"""
@@ -150,16 +144,14 @@ class SingleBListItem(RetrieveUpdateDestroyAPIView):
     serializer_class = BucketlistItemSerializer
     queryset = BucketListItem.objects.all()
 
-
-
     def get_object(self):
         """
         Specify the object to be  updated,
          retrieved or delete actions
          """
-        queryset = BucketListItem.objects.filter(bucketlist__creator=self.request.user, pk=self.kwargs.get('pk'))
+        queryset = BucketListItem.objects.filter(
+            bucketlist__creator=self.request.user, pk=self.kwargs.get('pk'))
         if queryset:
             return queryset[0]
         else:
             return "No search item create by you"
-

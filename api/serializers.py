@@ -72,6 +72,7 @@ class BucketlistItemSerializer(ModelSerializer):
 class BucketlistSerializer(ModelSerializer):
     items = BucketlistItemSerializer(many=True, read_only=True)
     list_name = serializers.CharField(max_length=100)
+    creator = UserSerializer(read_only=True)
 
     def validate(self, data):
         """Ensure list_name is not equal."""
