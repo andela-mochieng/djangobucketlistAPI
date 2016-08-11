@@ -19,6 +19,7 @@ from rest_framework.filters import (
 from .permissions import IsOwnerOrReadOnly
 from .models import BucketList, BucketListItem
 from .pagination import CustomPageNumberPagination
+from rest_framework import viewsets
 
 
 def get_user_bucketlist(obj):
@@ -68,9 +69,19 @@ class BListsView(ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(creator=self.request.user)
 
+    # def create(self, request):
+    #     request.POST._mutable = True
+    #     request.data['creator'] = request.user.id
+    #     serializer = BucketlistSerializer(data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST
+
+
     def get_queryset(self):
         """Specifies the queryset used for serialization"""
-        search = self.request.GET.get('s', None)
+        search=self.request.GET.get('s', None)
         if search:
             return BucketList.search(search)
         return BucketList.objects.all().filter(creator=self.request.user)
@@ -86,9 +97,9 @@ class SingleBListDetailView(RetrieveUpdateDestroyAPIView):
           AccessToken  (required)
       Response: JSON
     """
-    queryset = BucketList.objects.all()
-    serializer_class = BucketlistSerializer
-    permission_classes = (IsOwnerOrReadOnly, IsAuthenticated,)
+    queryset=BucketList.objects.all()
+    serializer_class=BucketlistSerializer
+    permission_classes=(IsOwnerOrReadOnly, IsAuthenticated,)
 
 
 class BListItemCreateView(ListCreateAPIView):
@@ -107,18 +118,18 @@ class BListItemCreateView(ListCreateAPIView):
       Response: JSON
     """
 
-    pagination_class = CustomPageNumberPagination
-    serializer_class = BucketlistItemSerializer
-    queryset = BucketListItem.objects.all()
-    permission_classes = (IsAuthenticated,)
-    filter_backends = [SearchFilter, OrderingFilter]
-    search_fields = ['item_name']
+    pagination_class=CustomPageNumberPagination
+    serializer_class=BucketlistItemSerializer
+    queryset=BucketListItem.objects.all()
+    permission_classes=(IsAuthenticated,)
+    filter_backends=[SearchFilter, OrderingFilter]
+    search_fields=['item_name']
 
     def perform_create(self, serializer):
         """"""
-        value = [(k, int(v)) for k, v in self.kwargs.items()]
-        pk = value[0][1]
-        bucketlist = get_object_or_404(
+        value=[(k, int(v)) for k, v in self.kwargs.items()]
+        pk=value[0][1]
+        bucketlist=get_object_or_404(
             BucketList,
             pk=pk)
         serializer.save(bucketlist=bucketlist)
@@ -140,16 +151,16 @@ class SingleBListItem(RetrieveUpdateDestroyAPIView):
           AccessToken  (required)
       Response: JSON
     """
-    permission_classes = (IsAuthenticated,)
-    serializer_class = BucketlistItemSerializer
-    queryset = BucketListItem.objects.all()
+    permission_classes=(IsAuthenticated,)
+    serializer_class=BucketlistItemSerializer
+    queryset=BucketListItem.objects.all()
 
     def get_object(self):
         """
         Specify the object to be  updated,
          retrieved or delete actions
          """
-        queryset = BucketListItem.objects.filter(
+        queryset=BucketListItem.objects.filter(
             bucketlist__creator=self.request.user, pk=self.kwargs.get('pk'))
         if queryset:
             return queryset[0]
