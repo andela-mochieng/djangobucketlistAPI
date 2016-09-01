@@ -25,7 +25,7 @@ The API resources are accessible at [localhost:8000/api/v1.0/](http://127.0.0.1:
 |  `/api/v.1/api-token-auth/` | POST | Obtain login token |
 | `/api/v.1/bucketlists/` | POST | Create a bucket list |
 | `/api/v.1/bucketlists/` | GET | Retrieve all bucketlists |
-| `/api/v.1/bucketlists/?limit=1&page=1` | GET | Retrieve one bucketlist per page|
+| `/api/v.1/bucketlists/?&page=1` | GET | Retrieves nine bucketlist per page|
 | `/api/v.1/bucketlists/<id>/` | GET |  A single bucket list |
 | `/api/v.1/bucketlists/<id>/` | PUT | Update a single bucket list |
 | `/api/v.1/bucketlists/<id>/` | DELETE | Delete a single bucket list |
