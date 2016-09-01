@@ -3,8 +3,8 @@
 # C extensions
 
 .idea
-.staticfiles/
-.bower_components/
+staticfiles/*
+bower_components/*
 
 
 # Unit test / coverage reports

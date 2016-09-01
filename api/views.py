@@ -121,7 +121,8 @@ class BListItemCreateView(ListCreateAPIView):
 
     def perform_create(self, serializer):
         bucketlist = get_user_bucketlist(self)
-        serializer.save(bucketlist=bucketlist)
+        print(bucketlist)
+        serializer.save(bucketlist=bucketlist[0])
 
     def get_queryset(self):
         bucketlist = get_user_bucketlist(self)
@@ -153,4 +154,3 @@ class SingleBListItem(RetrieveUpdateDestroyAPIView):
         bucketlist = get_user_bucketlist(self)
         queryset = BucketListItem.objects.filter(bucketlist=bucketlist)
         return queryset
-

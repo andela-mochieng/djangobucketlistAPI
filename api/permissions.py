@@ -1,7 +1,7 @@
 """Defines our API custom permissions"""
 from rest_framework.permissions import BasePermission
 from .models import BucketListItem, BucketList
-from django.shortcuts import get_object_or_404
+
 
 
 class IsOwnerOrReadOnly(BasePermission):
